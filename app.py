@@ -688,8 +688,5 @@ def reset(robotid):
 # Main program's running code here
 #
 
-def start_server():
+if __name__ == '__main__':
     socketio.run(app, host=HOST, port=PORT)
-
-
-start_server()
