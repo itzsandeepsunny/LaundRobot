@@ -12,7 +12,7 @@ sys.path.insert(0, '../local-libs/site-packages')
 #   Setting up server
 #
 
-HOST = '0.0.0.0'
+HOST = '127.0.0.1'
 PORT = 5000
 
 app = Flask(__name__)
