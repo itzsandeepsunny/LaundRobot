@@ -35,13 +35,13 @@ sorted_color1 = 0
 sorted_color2 = 0
 sorted_color3 = 0
 sorted_color4 = 0
-colorlist = [1,2,3,4]
+colorlist = [1, 2, 3, 4]
 
 
 @app.route("/")
 def index():
     x = """Welcome to the Flask Server<br>
-    Links for testing purposes on Local Server<br>
+    Links for testing purposes on <b>Local Server</b><br>
     <a href="http://127.0.0.1:5000/getone">getallrobots</a><br>
     <a href="http://127.0.0.1:5000/getpickerinfo">getpickerinfo</a><br>
     <a href="http://127.0.0.1:5000/getsorterinfo">getsorterinfo</a><br>
@@ -54,13 +54,13 @@ def index():
 
 @app.route("/getallrobots")
 def getallrobots():
-    scheduler.add_job(func=scheduled_picker, trigger='interval', seconds=300,id='chrono_picker')
-    if(scheduler.get_jobs()!=[]):
-        if(scheduler.get_jobs()!=[]):
+    scheduler.add_job(func=scheduled_picker, trigger='interval', seconds=300, id='chrono_picker')
+    if (scheduler.get_jobs() != []):
+        if (scheduler.get_jobs() != []):
             for job in scheduler.get_jobs():
-                if(job.name =='chrono_picker'):
+                if (job.name == 'chrono_picker'):
                     time = job.next_run_time
-    
+
     print(secondsleft(time))
 
     x = """{
@@ -88,27 +88,26 @@ def getallrobots():
 @app.route("/getpickerinfo")
 def getpickerinfo():
     time = 0
-    set=False
+    set = False
     update_pick_status()
-    if(scheduler.get_jobs()!=[]):
+    if (scheduler.get_jobs() != []):
         if id == "1":
-            if(scheduler.get_jobs()!=[]):
-                for job in scheduler.get_jobs():
-                    if(job.name =='chrono_picker'):
-                        time = job.next_run_time
-                        set=True
+            for job in scheduler.get_jobs():
+                if (job.name == 'chrono_picker'):
+                    time = job.next_run_time
+                    set = True
     x = {
-    "success": True,
-    "body": {
-        "name": "Name1",
-        "type" : "1",
-        "status": pickstatus,
-        "timer": {
-            "set": set,
-            "time_left":secondsleft(time)
-        },
-        "picked_up_items": picked
-    }
+        "success": True,
+        "body": {
+            "name": "Name1",
+            "type": "1",
+            "status": pickstatus,
+            "timer": {
+                "set": set,
+                "time_left": secondsleft(time)
+            },
+            "picked_up_items": picked
+        }
     }
     return jsonify(x)
 
@@ -118,13 +117,12 @@ def getsorterinfo():
     time = 0
     set = False
     update_sort_status()
-    if(scheduler.get_jobs()!=[]):
-        if id == "1":
-            if(scheduler.get_jobs()!=[]):
-                for job in scheduler.get_jobs():
-                    if(job.name =='chrono_sorter'):
-                        time = job.next_run_time
-                        set = True
+    if (scheduler.get_jobs() != []):
+        if id == "2":
+            for job in scheduler.get_jobs():
+                if (job.name == 'chrono_sorter'):
+                    time = job.next_run_time
+                    set = True
 
     x = {
         "success": True,
@@ -142,25 +140,24 @@ def getsorterinfo():
                 sorted_color3,
                 sorted_color4
             ],
-            "colors":colorlist
+            "colors": colorlist
         }
     }
     return jsonify(x)
+
 
 @app.route("/getone")
 def getone():
     id = request.args.get('robotid')
     time = 0
-    set=False
+    set = False
     if id == "1":
         update_pick_status()
-        if(scheduler.get_jobs()!=[]):
-            if id == "1":
-                if(scheduler.get_jobs()!=[]):
-                    for job in scheduler.get_jobs():
-                        if(job.name =='chrono_picker'):
-                            time = job.next_run_time
-                            set=True
+        if (scheduler.get_jobs() != []):
+            for job in scheduler.get_jobs():
+                if (job.name == 'chrono_picker'):
+                    time = job.next_run_time
+                    set = True
         x = {
             "success": True,
             "body": {
@@ -170,22 +167,20 @@ def getone():
                 "status": pickstatus,
                 "timer": {
                     "set": set,
-                    "time": secondsleft(time)
+                    "time_left": secondsleft(time)
                 },
                 "picked_up_items": str(picked)
             }
         }
     elif id == "2":
         time = 0
-        set=False
+        set = False
         update_sort_status()
-        if(scheduler.get_jobs()!=[]):
-            if id == "1":
-                if(scheduler.get_jobs()!=[]):
-                    for job in scheduler.get_jobs():
-                        if(job.name =='chrono_sorter'):
-                            time = job.next_run_time
-                            set = True
+        if (scheduler.get_jobs() != []):
+            for job in scheduler.get_jobs():
+                if (job.name == 'chrono_sorter'):
+                    time = job.next_run_time
+                    set = True
         x = {
             "success": True,
             "body": {
@@ -290,7 +285,7 @@ def start():
 
 @app.route('/settimer', methods=['POST'])
 def settimer():
-    time=180
+    time = 180
     set = False
     json_data = request.json
     id = json_data['robot_id']
@@ -299,14 +294,14 @@ def settimer():
     print(set)
 
     if set == False:
-        if(scheduler.get_jobs()!=[]):
-            if id == "1":
-                if(scheduler.get_jobs()!=[]):
-                    for job in scheduler.get_jobs():
-                        if(job.name =='chrono_picker'):
-                            scheduler.remove_job(id='chrono_picker')
-                print('Scheduler reset for picker')
-                x = {
+        if id == "1":
+            if (scheduler.get_jobs() != []):
+                for job in scheduler.get_jobs():
+                    if (job.name == 'chrono_picker'):
+                        scheduler.remove_job(id='chrono_picker')
+
+            print('Scheduler reset for picker')
+            x = {
                 "success": True,
                 "body": {
                     "timer": {
@@ -315,13 +310,13 @@ def settimer():
                     }
                 }
             }
-            elif id == "2":
-                if(scheduler.get_jobs()!=[]):
-                    for job in scheduler.get_jobs():
-                        if(job.name =='chrono_sorter'):
-                            scheduler.remove_job(id='chrono_sorter')
-                print('Scheduler reset for sorter')
-                x = {
+        elif id == "2":
+            if (scheduler.get_jobs() != []):
+                for job in scheduler.get_jobs():
+                    if (job.name == 'chrono_sorter'):
+                        scheduler.remove_job(id='chrono_sorter')
+            print('Scheduler reset for sorter')
+            x = {
                 "success": True,
                 "body": {
                     "timer": {
@@ -330,24 +325,24 @@ def settimer():
                     }
                 }
             }
-            else:
-                print("++++++++++++++++++++++++++++++++++++++++++")
-                print("incorrect robot id")
-                print("++++++++++++++++++++++++++++++++++++++++++")
-                x = {
-                    "success": False,
-                    "body": {"errMessage": "incorrect robot id"}
-                }
-            
+        else:
+            print("++++++++++++++++++++++++++++++++++++++++++")
+            print("incorrect robot id")
+            print("++++++++++++++++++++++++++++++++++++++++++")
+            x = {
+                "success": False,
+                "body": {"errMessage": "incorrect robot id"}
+            }
+
 
     elif set == True:
         if id == "1":
-            if(scheduler.get_jobs()!=[]):
+            if (scheduler.get_jobs() != []):
                 for job in scheduler.get_jobs():
-                    if(job.name =='chrono_picker'):
+                    if (job.name == 'chrono_picker'):
                         scheduler.remove_job(id='chrono_picker')
-            scheduler.add_job(func=scheduled_picker, trigger='interval', seconds=time,id='chrono_picker')
-            print('Scheduler set for picker for '+time+'seconds')
+            scheduler.add_job(func=scheduled_picker, trigger='interval', seconds=int(time), id='chrono_picker')
+            # print('Scheduler set for picker for '+time+'seconds')
             x = {
                 "success": True,
                 "body": {
@@ -358,12 +353,12 @@ def settimer():
                 }
             }
         elif id == "2":
-            if(scheduler.get_jobs()!=[]):
+            if (scheduler.get_jobs() != []):
                 for job in scheduler.get_jobs():
-                    if(job.name =='chrono_sorter'):
+                    if (job.name == 'chrono_sorter'):
                         scheduler.remove_job(id='chrono_sorter')
-            scheduler.add_job(func=scheduled_sorter, trigger='interval', seconds=time,id='chrono_sorter')
-            print('Scheduler set for sorter for '+secondsleft(time)+'seconds')
+            scheduler.add_job(func=scheduled_sorter, trigger='interval', seconds=int(time), id='chrono_sorter')
+            # print('Scheduler set for sorter for '+secondsleft(time)+'seconds')
             x = {
                 "success": True,
                 "body": {
@@ -383,6 +378,7 @@ def settimer():
             }
 
     return jsonify(x)
+
 
 @app.route('/setcolor', methods=['POST'])
 def setcolor():
@@ -435,26 +431,37 @@ def get_pick_robot_id():
 def get_sort_robot_id():
     return clients_sid[clients_type.index("sort")]
 
+
 #
 # Scheduler Function
 #
 
 def scheduled_picker():
     stop_pick_robot()
+    if (scheduler.get_jobs() != []):
+        for job in scheduler.get_jobs():
+            if (job.name == 'chrono_picker'):
+                scheduler.remove_job(id='chrono_picker')
     print('Event Triggered')
+
 
 def scheduled_sorter():
     stop_sort_robot()
+    if (scheduler.get_jobs() != []):
+        for job in scheduler.get_jobs():
+            if (job.name == 'chrono_sorter'):
+                scheduler.remove_job(id='chrono_sorter')
     print('Event Triggered')
+
 
 def secondsleft(scheduled):
     if scheduled == 0:
         return 0
     else:
         scheduled = scheduled.replace(tzinfo=None)
-        seconds= int((scheduled - datetime.now()).total_seconds())
-        return(seconds)
-        
+        seconds = int((scheduled - datetime.now()).total_seconds())
+        return (seconds)
+
 
 #
 # Client Connection functions
@@ -494,12 +501,14 @@ def test_connect():
 def handle_message(data):
     print('received message: ' + data)
 
+
 @socketio.on('disconnect', namespace='/pick')
 def test_connect():
     print("++++++++++++++++++++++++++++++++++++++++++")
     print("A picking robot was disconnected")
     print("++++++++++++++++++++++++++++++++++++++++++")
     remove_client(get_pick_robot_id())
+
 
 @socketio.on('disconnect', namespace='/sort')
 def test_connect():
@@ -617,6 +626,7 @@ def update_pick_status():
         pickstatus = "disconnected"
         picked = 0
 
+
 @socketio.event
 def update_sort_status():
     if clients_type.count("sort") == 1:
@@ -683,10 +693,6 @@ def reset(robotid):
         emit('pass_message', 'sort pls reset', namespace='/sort', room=get_sort_robot_id())
         emit('control', 'reset status', namespace='/sort', room=get_sort_robot_id())
 
-
-#
-# Main program's running code here
-#
 
 if __name__ == '__main__':
     socketio.run(app, host=HOST, port=PORT)

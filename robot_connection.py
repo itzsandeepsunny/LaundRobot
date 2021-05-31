@@ -2,7 +2,7 @@ import socketio
 
 sio = socketio.Client()
 
-serverip = "http://127.0.0.1:5000/"
+serverip = "https://laundrobo.herokuapp.com:5000/"
 
 @sio.event
 def connect():
