@@ -149,9 +149,9 @@ def getsorterinfo():
 @app.route("/getone")
 def getone():
     id = request.args.get('robotid')
-    time = 0
-    set = False
     if id == "1":
+        time = 0
+        set = False
         update_pick_status()
         if (scheduler.get_jobs() != []):
             for job in scheduler.get_jobs():
@@ -593,26 +593,30 @@ def handle_json(data):
 
 @socketio.event
 def start_pick_robot():
-    emit('pass_message', 'pick let go', namespace='/pick', room=get_pick_robot_id())
-    emit('control', 'start', namespace='/pick', room=get_pick_robot_id())
+    if clients_type.count("pick") == 1:
+        emit('pass_message', 'pick let go', namespace='/pick', room=get_pick_robot_id())
+        emit('control', 'start', namespace='/pick', room=get_pick_robot_id())
 
 
 @socketio.event
 def stop_pick_robot():
-    emit('pass_message', 'pick pls stop', namespace='/pick', room=get_pick_robot_id())
-    emit('control', 'stop', namespace='/pick', room=get_pick_robot_id())
+    if clients_type.count("pick") == 1:
+        emit('pass_message', 'pick pls stop', namespace='/pick', room=get_pick_robot_id())
+        emit('control', 'stop', namespace='/pick', room=get_pick_robot_id())
 
 
 @socketio.event
 def start_sort_robot():
-    emit('pass_message', 'sort let go', namespace='/sort', room=get_sort_robot_id())
-    emit('control', 'start', namespace='/sort', room=get_sort_robot_id())
+    if clients_type.count("sort") == 1:
+        emit('pass_message', 'sort let go', namespace='/sort', room=get_sort_robot_id())
+        emit('control', 'start', namespace='/sort', room=get_sort_robot_id())
 
 
 @socketio.event
 def stop_sort_robot():
-    emit('pass_message', 'sort pls stop', namespace='/sort', room=get_sort_robot_id())
-    emit('control', 'stop', namespace='/sort', room=get_sort_robot_id())
+    if clients_type.count("sort") == 1:
+        emit('pass_message', 'sort pls stop', namespace='/sort', room=get_sort_robot_id())
+        emit('control', 'stop', namespace='/sort', room=get_sort_robot_id())
 
 
 @socketio.event
@@ -692,6 +696,7 @@ def reset(robotid):
     if (clients_type(robotid) == "sort"):
         emit('pass_message', 'sort pls reset', namespace='/sort', room=get_sort_robot_id())
         emit('control', 'reset status', namespace='/sort', room=get_sort_robot_id())
+
 
 
 if __name__ == '__main__':
