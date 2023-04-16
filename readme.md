@@ -1,25 +1,22 @@
-# Flask Server to connect to Lego EVO3 and perform actions.
+ # LaundRobot Flask Server
 
-# REST api calls can be issued to this server to access information from the server.
+LaundRobot is a Laundry sorting robot that is built on LEGO EV3 Platform.
+This Repository only includes the server built using flask to connect and mange the LEGO EV3 Robots.
 
-If there are environments
-
-venv\Scripts\activate
-
-to setup the flask app
-
-$env:FLASK_APP = "main.py"
-
-# run the program using 
-
-python main.py
-
-// flask run
-
-
-# For testing the client connection
-cd laundrobot
-
-venv\Scripts\activate
-
+# Installation
+Initialise the Virtual Environment using:
+```
+<environment name>\Scripts\activate
+```
+Install requirements using:
+```
+pip install -r requirements.txt
+```
+Finally, Run the server using. 
+```
+flask run
+```
+For testing the client connection:
+```
 python robot_connection.py
+```
