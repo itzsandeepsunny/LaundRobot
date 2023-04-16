@@ -1,10 +1,10 @@
  # LaundRobot Flask Server
 
 LaundRobot is a Laundry sorting robot that is built on LEGO EV3 Platform.
-This Repository only includes a server built using flask to connect to the LEGO EV3 Platform.
+This Repository only includes the server built using flask to connect and mange the LEGO EV3 Robots.
 
 # Installation
-Initialise the Environment using:
+Initialise the Virtual Environment using:
 ```
 <environment name>\Scripts\activate
 ```
